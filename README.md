@@ -120,9 +120,11 @@ pip install camel-oasis
 ```bash
 # For Bash shell (Linux, macOS, Git Bash on Windows):
 export OPENAI_API_KEY=<insert your OpenAI API key>
+export OPENROUTER_API_KEY=<insert your OpenRouter API key>
 
 # For Windows Command Prompt:
 set OPENAI_API_KEY=<insert your OpenAI API key>
+set OPENROUTER_API_KEY=<insert your OpenRouter API key>
 ```
 
 3. **Prepare the agent profile file:**

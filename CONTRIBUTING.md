@@ -310,6 +310,7 @@ Currently, the test setup requires an OpenAI API key to test the framework, maki
 ```bash
 # Export your OpenAI API key
 export OPENAI_API_KEY=<insert your OpenAI API key>
+export OPENROUTER_API_KEY=<insert your OpenRouter API key>
 ```
 
 - For Windows Command Prompt:\*\*
@@ -317,6 +318,7 @@ export OPENAI_API_KEY=<insert your OpenAI API key>
 ```cmd
 REM export your OpenAI API key
 set OPENAI_API_KEY=<insert your OpenAI API key>
+set OPENROUTER_API_KEY=<insert your OpenRouter API key>
 ```
 
 To run all tests including those that use OpenAI API, use the following command:

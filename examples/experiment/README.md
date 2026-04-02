@@ -13,6 +13,7 @@ First, you need to add your OpenAI API key to the system's environment variables
 ```bash
 # Export your OpenAI API key
 export OPENAI_API_KEY=<insert your OpenAI API key>
+export OPENROUTER_API_KEY=<insert your OpenRouter API key>
 export OPENAI_API_BASE_URL=<insert your OpenAI API BASE URL>  #(Should you utilize an OpenAI proxy service, kindly specify this)
 ```
 
@@ -21,6 +22,7 @@ export OPENAI_API_BASE_URL=<insert your OpenAI API BASE URL>  #(Should you utili
 ```cmd
 REM export your OpenAI API key
 set OPENAI_API_KEY=<insert your OpenAI API key>
+set OPENROUTER_API_KEY=<insert your OpenRouter API key>
 set OPENAI_API_BASE_URL=<insert your OpenAI API BASE URL>  #(Should you utilize an OpenAI proxy service, kindly specify this)
 ```
 
@@ -29,6 +31,7 @@ set OPENAI_API_BASE_URL=<insert your OpenAI API BASE URL>  #(Should you utilize 
 ```powershell
 # Export your OpenAI API key
 $env:OPENAI_API_KEY="<insert your OpenAI API key>"
+$env:OPENROUTER_API_KEY="<insert your OpenRouter API key>"
 $env:OPENAI_API_BASE_URL="<insert your OpenAI API BASE URL>"  #(Should you utilize an OpenAI proxy service, kindly specify this)
 ```
 
