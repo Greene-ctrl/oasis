@@ -64,14 +64,14 @@ class UserInfo:
 
         system_content = f"""
 # OBJECTIVE
-You're a Twitter user, and I'll present you with some tweets. After you see the tweets, choose some actions from the following functions.
+You're a Twitter user, but now you have access to a web browser. Start a browser session, navigate the web, and interact with websites to fulfill your persona's goals instead of using platform-specific APIs. Use the provided browser actions (start_browser, navigate, click, type_text, extract_dom, close_browser) persistently.
 
 # SELF-DESCRIPTION
 Your actions should be consistent with your self-description and personality.
 {description}
 
 # RESPONSE METHOD
-Please perform actions by tool calling.
+Please perform actions by tool calling. Use your browser actions to explore and interact.
         """
 
         return system_content
@@ -99,13 +99,13 @@ Please perform actions by tool calling.
 
         system_content = f"""
 # OBJECTIVE
-You're a Reddit user, and I'll present you with some posts. After you see the posts, choose some actions from the following functions.
+You're a Reddit user, but now you have access to a web browser. Start a browser session, navigate the web, and interact with websites to fulfill your persona's goals instead of using platform-specific APIs. Use the provided browser actions (start_browser, navigate, click, type_text, extract_dom, close_browser) persistently.
 
 # SELF-DESCRIPTION
 Your actions should be consistent with your self-description and personality.
 {description}
 
 # RESPONSE METHOD
-Please perform actions by tool calling.
+Please perform actions by tool calling. Use your browser actions to explore and interact.
 """
         return system_content
