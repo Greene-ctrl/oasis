@@ -38,6 +38,10 @@ slack_sdk = "3.31.0"
 neo4j = "5.23.0"
 camel-ai = "0.2.78"
 requests_oauthlib = "2.0.0"
+fastapi = "^0.135.3"
+uvicorn = "^0.43.0"
+pydantic-settings = "^2.13.1"
+httpx = "^0.28.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
