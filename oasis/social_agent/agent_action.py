@@ -34,6 +34,7 @@ class SocialAction:
                 self.type_text,
                 self.extract_dom,
                 self.close_browser,
+                self.fetch_rss_feed,
             ]
         ]
 
@@ -61,6 +62,10 @@ class SocialAction:
     async def close_browser(self):
         """Closes the browser session."""
         return await self.perform_action(None, ActionType.CLOSE_BROWSER.value)
+
+    async def fetch_rss_feed(self, url: str):
+        """Explicitly fetch an RSS feed from a URL."""
+        return await self.perform_action(url, ActionType.FETCH_RSS_FEED.value)
 
     async def perform_action(self, message: Any, type: str):
         message_id = await self.channel.write_to_receive_queue(

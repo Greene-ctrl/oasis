@@ -54,3 +54,15 @@ async def extract_dom(agent_id: int):
 @app.post("/api/agents/{agent_id}/session/close")
 async def close_session(agent_id: int):
     return await browser_manager.remove_session(agent_id)
+
+
+class FetchRSSRequest(BaseModel):
+    url: str
+
+@app.post("/api/agents/{agent_id}/browser/rss")
+async def fetch_rss(agent_id: int, req: FetchRSSRequest):
+    session = browser_manager.get_session(agent_id)
+    try:
+        return await session.fetch_rss_feed(req.url)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

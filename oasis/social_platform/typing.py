@@ -53,6 +53,7 @@ class ActionType(Enum):
     TYPE_TEXT = "type_text"
     EXTRACT_DOM = "extract_dom"
     CLOSE_BROWSER = "close_browser"
+    FETCH_RSS_FEED = "fetch_rss_feed"
 
     @classmethod
     def get_default_twitter_actions(cls):
@@ -63,6 +64,7 @@ class ActionType(Enum):
             cls.TYPE_TEXT,
             cls.EXTRACT_DOM,
             cls.CLOSE_BROWSER,
+            cls.FETCH_RSS_FEED,
         ]
 
     @classmethod
@@ -74,6 +76,7 @@ class ActionType(Enum):
             cls.TYPE_TEXT,
             cls.EXTRACT_DOM,
             cls.CLOSE_BROWSER,
+            cls.FETCH_RSS_FEED,
         ]
 
 
