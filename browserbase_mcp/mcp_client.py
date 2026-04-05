@@ -1,27 +1,47 @@
 import httpx
-import json
 from typing import Dict, Any, Optional
-import asyncio
 
 class BrowserbaseMCPClient:
     def __init__(self, api_key: str):
         self.api_key = api_key
         self.base_url = "https://mcp.browserbase.com/mcp"
         self.client = httpx.AsyncClient(timeout=60.0)
+        self.session_id: Optional[str] = None
+        self._request_id = 1
+
+    async def initialize(self) -> None:
+        """Initializes the MCP session with Browserbase and retrieves the mcp-session-id."""
+        url = f"{self.base_url}?browserbaseApiKey={self.api_key}"
+        payload = {
+            "method": "initialize",
+            "params": {
+                "protocolVersion": "2024-11-05",
+                "capabilities": {},
+                "clientInfo": {"name": "oasis-mcp", "version": "1.0"}
+            },
+            "jsonrpc": "2.0",
+            "id": self._request_id
+        }
+        self._request_id += 1
+
+        headers = {
+            "Accept": "application/json, text/event-stream"
+        }
+
+        response = await self.client.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+
+        # Extract mcp-session-id from headers
+        self.session_id = response.headers.get("mcp-session-id")
+        if not self.session_id:
+            raise Exception("Failed to retrieve mcp-session-id from Browserbase MCP server initialization")
 
     async def _call_tool(self, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
         """Helper to call an MCP tool."""
-        # For simplicity, we implement this as a direct HTTP POST call if the endpoint supports it.
-        # Alternatively, using the official python `mcp` library client.
-        # Since standard MCP HTTP POST is typically `/tools/{tool_name}/call` or similar:
-        # However, the exact HTTP format for Browserbase MCP might require Server-Sent Events (SSE) or simple JSON RPC.
-        # We will use the standard structure. We will implement it directly via POST to the mcp URL if it supports simple POSTs for tool calls.
-        # But generally, for MCP over SSE, you need to connect to SSE first, get the POST endpoint, then POST the tool call.
-        # Let's write a generic request structure. In a real scenario, we might use `mcp` SDK if it supports HTTP transport out of the box.
+        if not self.session_id:
+            await self.initialize()
 
         url = f"{self.base_url}?browserbaseApiKey={self.api_key}"
-
-        # This is a mocked/simplified version of an MCP JSON-RPC call.
         payload = {
             "jsonrpc": "2.0",
             "method": "tools/call",
@@ -29,15 +49,35 @@ class BrowserbaseMCPClient:
                 "name": tool_name,
                 "arguments": arguments
             },
-            "id": 1
+            "id": self._request_id
+        }
+        self._request_id += 1
+
+        headers = {
+            "mcp-session-id": self.session_id,
+            "Accept": "application/json, text/event-stream",
+            "Content-Type": "application/json"
         }
 
         try:
-            response = await self.client.post(url, json=payload)
+            response = await self.client.post(url, json=payload, headers=headers)
             response.raise_for_status()
-            return response.json()
+
+            # The server responds with SSE format (event: message\ndata: {json}\n\n)
+            text = response.text
+            data_line = next((line for line in text.split("\n") if line.startswith("data: ")), None)
+
+            if data_line:
+                import json
+                return json.loads(data_line[6:])
+            else:
+                return {"error": "Invalid SSE response format", "content": text}
         except httpx.HTTPError as e:
-            return {"error": str(e)}
+            return {"error": str(e), "content": getattr(e, "response", None) and e.response.text}
+
+    async def start(self) -> Dict[str, Any]:
+        """Starts the Browserbase session for this context."""
+        return await self._call_tool("start", {})
 
     async def navigate(self, url: str) -> Dict[str, Any]:
         """Navigates to a specific URL."""

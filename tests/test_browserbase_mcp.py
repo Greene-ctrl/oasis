@@ -84,6 +84,8 @@ async def test_mcp_client_mock():
     with patch("httpx.AsyncClient.post") as mock_post:
         # Mock httpx response
         mock_response = MagicMock(spec=Response)
+        mock_response.headers = {"mcp-session-id": "mock-session-id"}
+        mock_response.text = 'event: message\ndata: {"result": "success"}\n\n'
         mock_response.json.return_value = {"result": "success"}
         mock_response.raise_for_status.return_value = None
         mock_post.return_value = mock_response

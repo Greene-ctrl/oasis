@@ -27,6 +27,10 @@ async def run_persona_session(persona_id: str, target_url: str, api_key: str, si
     simulations_store[simulation_id]["logs"].append(f"[{persona_id}] Starting session...")
 
     try:
+        # Start browser session
+        simulations_store[simulation_id]["logs"].append(f"[{persona_id}] Initializing browser session...")
+        await client.start()
+
         # Navigate
         simulations_store[simulation_id]["logs"].append(f"[{persona_id}] Navigating to {target_url}...")
         await client.navigate(target_url)
