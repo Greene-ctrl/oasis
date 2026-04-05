@@ -5,7 +5,7 @@ import uuid
 from typing import Dict, Any
 
 from browserbase_mcp.settings import Settings, get_settings
-from browserbase_mcp.mcp_client import BrowserbaseMCPClient
+from browserbase_mcp.mcp_client import GradioMCPClient
 
 router = APIRouter(prefix="/api/v1/simulation", tags=["simulation"])
 
@@ -22,8 +22,8 @@ class StartSimulationResponse(BaseModel):
 # In-memory store for simulation statuses
 simulations_store: Dict[str, Dict[str, Any]] = {}
 
-async def run_persona_session(persona_id: str, target_url: str, api_key: str, simulation_id: str):
-    client = BrowserbaseMCPClient(api_key=api_key)
+async def run_persona_session(persona_id: str, target_url: str, mcp_base_url: str, simulation_id: str):
+    client = GradioMCPClient(base_url=mcp_base_url)
     simulations_store[simulation_id]["logs"].append(f"[{persona_id}] Starting session...")
 
     try:
@@ -51,11 +51,11 @@ async def run_persona_session(persona_id: str, target_url: str, api_key: str, si
     finally:
         await client.close()
 
-async def run_simulation_orchestrator(simulation_id: str, target_url: str, num_personas: int, api_key: str):
+async def run_simulation_orchestrator(simulation_id: str, target_url: str, num_personas: int, mcp_base_url: str):
     tasks = []
     for i in range(num_personas):
         persona_id = f"persona_{i+1}"
-        tasks.append(run_persona_session(persona_id, target_url, api_key, simulation_id))
+        tasks.append(run_persona_session(persona_id, target_url, mcp_base_url, simulation_id))
 
     await asyncio.gather(*tasks)
     simulations_store[simulation_id]["status"] = "completed"
@@ -78,7 +78,7 @@ async def start_simulation(request: StartSimulationRequest, background_tasks: Ba
         simulation_id=simulation_id,
         target_url=request.target_url,
         num_personas=actual_count,
-        api_key=settings.browserbase_api_key
+        mcp_base_url=settings.mcp_base_url
     )
 
     return StartSimulationResponse(

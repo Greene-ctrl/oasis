@@ -8,7 +8,7 @@ from unittest.mock import patch, MagicMock
 client = TestClient(app)
 
 def get_settings_override():
-    return Settings(testing_mode=True, browserbase_api_key="test_key")
+    return Settings(testing_mode=True, mcp_base_url="https://test.local/mcp/")
 
 app.dependency_overrides[get_settings] = get_settings_override
 
@@ -48,7 +48,7 @@ def test_generate_personas_under_limit():
     assert data["count_actual"] == 1
     assert len(data["personas"]) == 1
 
-@patch("browserbase_mcp.mcp_client.BrowserbaseMCPClient._call_tool")
+@patch("browserbase_mcp.mcp_client.GradioMCPClient._call_tool")
 def test_simulation_start_and_status(mock_call_tool):
     # Mocking the async tool calls so background task runs without real HTTP requests
     async def async_mock(*args, **kwargs):
@@ -76,15 +76,15 @@ def test_simulation_start_and_status(mock_call_tool):
 
 @pytest.mark.asyncio
 async def test_mcp_client_mock():
-    from browserbase_mcp.mcp_client import BrowserbaseMCPClient
+    from browserbase_mcp.mcp_client import GradioMCPClient
     from httpx import Response
 
-    client = BrowserbaseMCPClient(api_key="fake")
+    client = GradioMCPClient(base_url="https://test.local/mcp/")
 
     with patch("httpx.AsyncClient.post") as mock_post:
         # Mock httpx response
         mock_response = MagicMock(spec=Response)
-        mock_response.headers = {"mcp-session-id": "mock-session-id"}
+        mock_response.headers = {}
         mock_response.text = 'event: message\ndata: {"result": "success"}\n\n'
         mock_response.json.return_value = {"result": "success"}
         mock_response.raise_for_status.return_value = None
@@ -97,5 +97,5 @@ async def test_mcp_client_mock():
         args, kwargs = mock_post.call_args
         payload = kwargs["json"]
         assert payload["method"] == "tools/call"
-        assert payload["params"]["name"] == "navigate"
+        assert payload["params"]["name"] == "get_html_source"
         assert payload["params"]["arguments"] == {"url": "https://test.com"}

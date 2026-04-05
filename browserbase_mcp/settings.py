@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
 
 class Settings(BaseSettings):
-    browserbase_api_key: str = ""
+    mcp_base_url: str = "https://huge-doors-enter.loca.lt/gradio_api/mcp/"
     testing_mode: bool = True
 
     @property
