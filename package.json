@@ -1,0 +1,30 @@
+{
+  "name": "aux-ux",
+  "version": "1.0.0",
+  "description": "AUX: AI-Powered Usability Testing Suite",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node ux_sim_app/report/marpit_smoke_test.js",
+    "smoke": "node ux_sim_app/report/marpit_smoke_test.js",
+    "lint": "node --check ux_sim_app/report/marpit_render.js && node --check ux_sim_app/report/marpit_smoke_test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Greene-ctrl/aux.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Greene-ctrl/aux/issues"
+  },
+  "homepage": "https://github.com/Greene-ctrl/aux#readme",
+  "dependencies": {
+    "@marp-team/marpit": "^3.2.1"
+  }
+}
