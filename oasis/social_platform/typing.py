@@ -47,34 +47,36 @@ class ActionType(Enum):
     SEND_TO_GROUP = "send_to_group"
     CREATE_GROUP = "create_group"
     LISTEN_FROM_GROUP = "listen_from_group"
+    START_BROWSER = "start_browser"
+    NAVIGATE = "navigate"
+    CLICK = "click"
+    TYPE_TEXT = "type_text"
+    EXTRACT_DOM = "extract_dom"
+    CLOSE_BROWSER = "close_browser"
+    FETCH_RSS_FEED = "fetch_rss_feed"
 
     @classmethod
     def get_default_twitter_actions(cls):
         return [
-            cls.CREATE_POST,
-            cls.LIKE_POST,
-            cls.REPOST,
-            cls.FOLLOW,
-            cls.DO_NOTHING,
-            cls.QUOTE_POST,
+            cls.START_BROWSER,
+            cls.NAVIGATE,
+            cls.CLICK,
+            cls.TYPE_TEXT,
+            cls.EXTRACT_DOM,
+            cls.CLOSE_BROWSER,
+            cls.FETCH_RSS_FEED,
         ]
 
     @classmethod
     def get_default_reddit_actions(cls):
         return [
-            cls.LIKE_POST,
-            cls.DISLIKE_POST,
-            cls.CREATE_POST,
-            cls.CREATE_COMMENT,
-            cls.LIKE_COMMENT,
-            cls.DISLIKE_COMMENT,
-            cls.SEARCH_POSTS,
-            cls.SEARCH_USER,
-            cls.TREND,
-            cls.REFRESH,
-            cls.DO_NOTHING,
-            cls.FOLLOW,
-            cls.MUTE,
+            cls.START_BROWSER,
+            cls.NAVIGATE,
+            cls.CLICK,
+            cls.TYPE_TEXT,
+            cls.EXTRACT_DOM,
+            cls.CLOSE_BROWSER,
+            cls.FETCH_RSS_FEED,
         ]
 
 
